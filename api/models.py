@@ -1,6 +1,12 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.db.models import Sum
+
+class User(AbstractUser):
+  rut = models.CharField(max_length=10)
+
+  def __str__(self) -> str:
+    return f"{self.first_name} {self.last_name}"
 
 class Comic(models.Model):
   title = models.CharField(max_length=255)
@@ -8,28 +14,20 @@ class Comic(models.Model):
   author = models.CharField(max_length=255)
   category = models.CharField(max_length=255)
   subcategory = models.CharField(max_length=255)
-  year = models.PositiveSmallIntegerField() # No, no nos vamos a pasar del año 32_767,
-                                            # no lo pienses tanto
+  year = models.PositiveSmallIntegerField()
   cost = models.PositiveIntegerField(default=0)
 
   def __str__(self) -> str:
     return self.name
+
+class Stock(models.Model):
+  comics = models.Man
+
   
 class Sale(models.Model):
-  datetime = models.DateTimeField(auto_now=True)
-  # TODO: Investigar como funciona el User model
-  #user = models.ForeignKey(User, on_delete=models.CASCADE)
-  # FIXME: Crear una tabla de clientes y sacar el nombre de ahí
-  customer_name = models.CharField(max_length=255)
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
   comics = models.ManyToManyField(Comic)
-
-  @property
-  def total_price(self):
-    queryset = self.comics.all().aggregate(total_price=Sum('cost', default=0))
-    return queryset["total_price"]
-  
-  class Meta: 
-    ordering = ["datetime"]
+  datetime = models.DateTimeField(auto_now_add=True)
 
   def __str__(self):
-    return f"${self.datetime}: $${self.total}"
+    return f"${self.datetime} ${self.user}"

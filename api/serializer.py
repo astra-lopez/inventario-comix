@@ -13,4 +13,4 @@ class SaleSerializer(serializers.ModelSerializer):
 
   class Meta:
     model = Sale
-    fields = "__all__"
+    fields = ('id', 'user', 'comics', 'datetime')
