@@ -10,17 +10,15 @@ from .models import Producto, Orden
 
 @login_required
 def index(request):
-  ordenes_usuario = Orden
+  ordenes = Orden.objects.all()
   usuarios = User.objects.all()[:2]
-  ordenes_admin = Orden.objects.all()[:2]
   productos = Producto.objects.all()[:2]
   usuarios_cantidad = len(User.objects.all())
   productos_cantidad = len(Producto.objects.all())
   ordenes_cantidad = len(Orden.objects.all())
   contexto = {
     "title": "Home",
-    "ordenes": ordenes_usuario,
-    "ordenes_admin": ordenes_admin,
+    "ordenes": ordenes,
     "usuarios": usuarios,
     "productos": productos,
     "usuarios_cantidad": usuarios_cantidad,
@@ -37,8 +35,8 @@ def productos(request):
   if request.method == "POST":
     form = ProductoForm(request.POST)
     if form.is_valid():
-      form.save
-      return redirect("products")
+      form.save()
+      return redirect("productos")
   else:
     form = ProductoForm()
   context = {"title": "Productos", "productos": productos, "form": form}
@@ -53,11 +51,11 @@ def ordenes(request):
     if form.is_valid():
       instance = form.save(commit=False)
       instance.ordenada_por = request.user
-      instance.save()
-      return redirect("orders")
+      instance.save(commit=True)
+      return redirect("ordenes")
   else:
     form = OrdenForm()
-  context = {"title": "Orenedes", "ordenes": ordenes, "form": form}
+  context = {"title": "Ordenes", "ordenes": ordenes, "form": form}
   return render(request, "ordenes.html", context)
 
 @login_required

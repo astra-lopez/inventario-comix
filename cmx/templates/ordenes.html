@@ -16,7 +16,7 @@
         </thead>
         {% if user.is_staff and user.is_superuser %}
         <tbody>
-          {% for order in ordenes %}
+          {% for order in ordenes_admin %}
           <tr>
             <td>{{ order.producto }}</td>
             <td>{{ order.ordenada_por.username }}</td>

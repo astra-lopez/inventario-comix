@@ -5,11 +5,10 @@
   env.GREET = "devenv";
 
   # https://devenv.sh/packages/
-  packages = with pkgs; [ 
-    git 
+  packages = with pkgs; [
+    git
     python311
-    python311Packages.pip
-    virtualenv
+    python311Packages.virtualenv
   ];
 
   # https://devenv.sh/scripts/
