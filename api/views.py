@@ -3,8 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import serializers, status
 from .models import Comic, Sale
-from .serializer import ComicSerializer, SaleSerializer
-
+from .serializers import ComicSerializer, SaleSerializer
 @api_view(['GET'])
 def ApiOverview(request):
   api_urls = {
@@ -138,3 +137,23 @@ def delete_sales(request, pk):
   return Response(status=status.HTTP_202_ACCEPTED)
 
 # Wow, that's a whole CRUD right there! We are almost done! [citation needed]
+
+from django.shortcuts import render
+from rest_framework import viewsets
+from rest_framework.response import Response
+from .models import Comic, Sale
+from django.contrib.auth.models import User
+from .serializers import (
+    ComicSerializer,
+    SaleSerializer,
+)
+
+# Create your views here.
+class ComicViewSet(viewsets.ModelViewSet):
+    queryset = Comic.objects.all()
+    serializer_class = ComicSerializer
+
+
+class SaleViewSet(viewsets.ModelViewSet):
+    queryset = Sale.objects.all()
+    serializer_class = SaleSerializer

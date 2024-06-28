@@ -1,14 +1,15 @@
-from django.urls import path
-from . import views
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import (
+  ComicViewSet,
+  SaleViewSet
+)
+
+
+router = DefaultRouter()
+router.register(r'Comic', ComicViewSet, basename='comic')
+router.register(r'Sales', SaleViewSet, basename='sales')
 
 urlpatterns = [
-  path('', views.ApiOverview, name='home'),
-  path('comics/', views.view_comics, name='view-comics'),
-  path('sales/', views.view_sales, name='view-sales'),
-  path('comics/create/', views.add_comics, name='add-comics'),
-  path('sales/create/', views.add_sales, name='add-sales'),
-  path('comics/update/<int:pk>/', views.update_comics, name='update-comics'),
-  path('sales/update/<int:pk>/', views.update_sales, name='update-sales'),
-  path('comics/delete/<int:pk>/', views.delete_comics, name='delete-comics'),
-  path('sales/delete/<int:pk>',views.delete_sales, name='delete-comics')
+    *router.urls,
 ]
