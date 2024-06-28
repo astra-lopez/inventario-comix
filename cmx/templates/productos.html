@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}{{ header }} {% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <table class="table">
+
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre del producto</th>
+                        <th scope="col">Cantidad</th>
+                        <th scope="col">Categoría</th>
+                        <th scope="col">Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in productos %}
+                    <tr>
+                        <td>{{ product.nombre }}</td>
+                        <td>{{ product.cantidad }}</td>
+                        <td>{{ product.categoria }}</td>
+                        <td>{{ product.descripcion }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% if user.is_staff and user.is_superuser %}
+        <div class="col-md-4">
+            <form method="POST">
+                <h4>Agregar produto nuevo</h4>
+                <hr>
+                {% csrf_token %}
+                {{ form|crispy}}
+                <br>
+                <button type="submit" class="btn btn-primary">Agregar</button>
+            </form>
+        </div>
+        {% else %}
+        <div class="col-md-4">
+
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

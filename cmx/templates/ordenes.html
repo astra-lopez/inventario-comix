@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }} {% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Producto ordenado</th>
+            <th scope="col">Ordenado por</th>
+            <th scope="col">Cantidad</th>
+            <th scope="col">Fecha</th>
+          </tr>
+        </thead>
+        {% if user.is_staff and user.is_superuser %}
+        <tbody>
+          {% for order in ordenes %}
+          <tr>
+            <td>{{ order.producto }}</td>
+            <td>{{ order.ordenada_por.username }}</td>
+            <td>{{ order.cantidad_ordenada }}</td>
+            <td>{{ order.fecha }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        {% else %}
+        <tbody>
+          {% for order in ordenes %}
+          {% if user.username == order.ordenada_por.username %}
+          <tr>
+            <td>{{ order.producto }}</td>
+            <td>{{ order.ordenada_por.username }}</td>
+            <td>{{ order.cantidad_ordenada }}</td>
+            <td>{{ order.fecha }}</td>
+          </tr>
+          {% endif %}
+          {% endfor %}
+        </tbody>
+        {% endif %}
+      </table>
+    </div>
+    <div class="col-md-4">
+      <form method="POST">
+        <h4>Crear Orden Nueva</h4>
+        <hr>
+        {% csrf_token %}
+        {{ form|crispy}}
+        <br>
+        <button type="submit" class="btn btn-primary">Crear</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

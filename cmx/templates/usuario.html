@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}{{ profile }} {% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="row align-items-start">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="text-center">Perfil</h1>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="card text-center p-3">
+                                <h4>Información</h4>
+                                <br>
+                                <table class="table bg-white table-borderless">
+                                    <tbody>
+                                        <tr>
+                                            <th scope="col">Nombre de usuario</th>
+                                            <td scope="col">{{ user.username }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="col">Nombre completo</th>
+                                            <td scope="col">{{ user.first_name }} {{user.last_name}}</td>
+                                        </tr>
+                                        <tr>
+                                          <th scope="col">Rut</th>
+                                          <td scope=col>{{ user.usuarioperfil.rut }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Email</th>
+                                            <td>{{ user.email }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Teléfono celular</th>
+                                            <td>{{ user.usarioperfil.celular }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Dirección</th>
+                                            <td>{{ user.usuarioperfil.physical_address }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

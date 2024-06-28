@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% block title %}{{ "Menú" }} {% endblock %}
+
+{% block content %}
+{% if user.is_authenticated and user.is_staff and user.is_superuser %}
+<div class="container my-4">
+    <div class="row align-items-start">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="text-center">Estatísticas</h1>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card text-center p-3">
+                                <h4>Usuarios Regitrados</h4>
+
+                                <h3><span class="badge bg-primary rounded-pill">{{ usuarios_cantidad }}</span></h3>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card text-center p-3">
+                                <h4>Total de Ordenes</h4>
+                                <h3><span class="badge bg-primary rounded-pill">{{ ordenes_cantidad }}</span></h3>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card text-center p-3">
+                                <h4>Total de Productos <i class="fa-thin fa-users"></i></h4>
+                                <h3><span class="badge bg-primary rounded-pill">{{ productos_cantidad }}</span></h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container my-4">
+    <div class="row align-items-start">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="text-center">Usuarios</h1>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">Nick</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Apellido(s)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                            <tr>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.first_name }}</td>
+                                <td>{{ user.last_name }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <a class="nav-link text-primary active" aria-current="page" href="{% url 'usuarios' %}">
+                      Ver personal tienda
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="text-center">Ordenes</h1>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">Producto</th>
+                                <th scope="col">Cantidad</th>
+                                <th scope="col">Fecha</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in ordenes_admin %}
+                            <tr>
+
+                                <td>{{ order.producto }}</td>
+                                <td>{{ order.cantidad_ordenada }}</td>
+                                <td>{{ order.fecha }}</td>
+                            </tr>
+                            {% endfor %}
+
+
+                        </tbody>
+                    </table>
+                    <a class="nav-link text-primary active" aria-current="page" href="{% url 'ordenes' %}">
+                      Ir a Ordenes
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="text-center">Productos</h1>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Cantidad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for product in productos %}
+                            <tr>
+                                <td>{{ product.nombre }}</td>
+                                <td>{{ product.cantidad }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <a class="nav-link text-primary active" aria-current="page" href="{% url 'productos' %}">
+                      Ir a Productos</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% else %}
+<div class="container my-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="text-center">Realizar una Orden</h4>
+                </div>
+                <div class="card-body">
+                    <a class="btn btn-info" href="{% url 'orders' %}">Crear Orden</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="text-center">Ordenes que has realizado</h4>
+                </div>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Producto ordenado</th>
+                        <th scope="col">Ordenado por</th>
+                        <th scope="col">Cantidad</th>
+                        <th scope="col">Fecha de orden</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    {% if order.created_by.username == user.username %}
+                    <tr>
+                        <td>{{ order.producto }}</td>
+                        <td>{{ order.ordenada_por.username }}</td>
+                        <td>{{ order.cantidad_ordenada}}</td>
+                        <td>{{ order.fecha }}</td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
